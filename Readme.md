@@ -1,4 +1,4 @@
-# docker-flub78/GVV2
+# flub78/docker-gvv
 
 defines a docker container running Arch Linux with the LAMP stack installed
 
