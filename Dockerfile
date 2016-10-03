@@ -8,8 +8,10 @@ ADD create_db.sql /tmp/
 ADD init_db.sh /tmp/
 RUN /tmp/init_db.sh
 
+# Not used anymore to avoid the clear password
 # RUN echo 'root:hello' | chpasswd
 
+# More convenient to mount the authorized_keys from the host
 # RUN mkdir -p /root/.ssh
 # RUN chmod 700 /root/.ssh
 # ADD id_rsa.pub /root/.ssh/authorized_keys
@@ -17,6 +19,8 @@ RUN /tmp/init_db.sh
 
 EXPOSE 80
 EXPOSE 22
+
+RUN useradd -ms /bin/bash frederic
 
 ENTRYPOINT service mysql start && \
 	service apache2 start && \
