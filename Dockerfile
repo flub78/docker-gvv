@@ -1,6 +1,8 @@
 FROM flub78/lamp-svn:latest
 MAINTAINER Frédéric Peignot frederic.peignot@free.fr
 
+ENV MAINTAINER "Frédéric Peignot"
+
 RUN	cd /var/www/html && \
 	svn export http://subversion.developpez.com/projets/gvv/trunk/gvv
 
@@ -8,8 +10,9 @@ ADD create_db.sql /tmp/
 ADD init_db.sh /tmp/
 RUN /tmp/init_db.sh
 
-# Not used anymore to avoid the clear password
-# RUN echo 'root:hello' | chpasswd
+# temporary password for root ssh access
+# to be removed once everything is setup
+RUN echo 'root:hello' | chpasswd
 
 # More convenient to mount the authorized_keys from the host
 # RUN mkdir -p /root/.ssh

@@ -16,5 +16,8 @@ http://localhost:10080/gvv/install/
 1. access with ssh
 ssh root@localhost -p 10022
 
+1. to build locally
+docker build -t flub78/gvv .
+
 
 
