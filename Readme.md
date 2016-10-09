@@ -19,5 +19,12 @@ ssh root@localhost -p 10022
 1. to build locally
 docker build -t flub78/gvv .
 
+1. Make sure that gvv.fr resolves to the container
+
+1. the following URL are available
+http://gvv.fr/install
+http://gvv.fr		
+(user = testadmin, password = password)
+
 
 

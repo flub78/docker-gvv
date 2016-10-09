@@ -10,22 +10,14 @@ ADD create_db.sql /tmp/
 ADD init_db.sh /tmp/
 RUN /tmp/init_db.sh
 
-# temporary password for root ssh access
-# to be removed once everything is setup
-RUN echo 'root:hello' | chpasswd
-
-# More convenient to mount the authorized_keys from the host
-# RUN mkdir -p /root/.ssh
-# RUN chmod 700 /root/.ssh
-# ADD id_rsa.pub /root/.ssh/authorized_keys
-# RUN chmod 600 /root/.ssh/authorized_keys
-
 EXPOSE 80
 EXPOSE 22
 
 RUN useradd -ms /bin/bash frederic
 
+ADD gvv.conf /etc/apache2/sites-enabled/000-default.conf
+ADD config.php /var/www/html/gvv/application/config/config.php
+	
 ENTRYPOINT service mysql start && \
-	service apache2 start && \
 	service ssh restart  && \
-	tail -f /var/log/apache2/access.log
+	/usr/sbin/apache2ctl -D FOREGROUND
