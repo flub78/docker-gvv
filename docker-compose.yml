@@ -1,0 +1,13 @@
+version: '2'
+services:
+  gvv:
+    build: .
+    image: flub78/gvv
+    ports:
+      - "7080:80"
+      - "7443:443"
+      - "7306:3306"
+      - "7432:5432"
+    extra_hosts:
+      - "gvv.fr:127.0.0.1"
+      - "citemplate.fr:127.0.0.1"
