@@ -1,5 +1,5 @@
 # Dockerfile to build a gvv container
-# FROM flub78/lamp-svn:latest
+
 FROM php:5.6-apache
 MAINTAINER Frédéric Peignot frederic.peignot@free.fr
 
@@ -11,7 +11,8 @@ RUN apt-get install -y subversion \
   vim \
   wget \
   php5-curl php5-dev php5-gd \
-  libfreetype6-dev libjpeg62-turbo-dev libmcrypt-dev libpng12-dev
+  libfreetype6-dev libjpeg62-turbo-dev libmcrypt-dev libpng12-dev \
+  phpunit
 
 # Install mysql without password  
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y mysql-server \
@@ -45,7 +46,6 @@ EXPOSE 22
 RUN useradd -ms /bin/bash frederic
 
 ADD sites-available/gvv.conf /etc/apache2/sites-available
-# ADD gvv.conf /etc/apache2/sites-available
 
 ADD config.php /var/www/html/gvv/application/config/config.php
 ADD html/index.html /var/www/html

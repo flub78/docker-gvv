@@ -1,6 +1,14 @@
 # flub78/docker-gvv
 
-defines a docker container with a live GVV application.
+Defines a docker container with a live GVV application.
+
+For production
+* A PHP enabled WEB server plus the GVV sources container
+* a MySql container
+
+For development
+* a phpmyadmin container
+* a jenkins container
 
 ## Usage
 
