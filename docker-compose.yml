@@ -15,8 +15,8 @@ services:
     domainname: test.flub78.fr
 
     image: flub78/gvv
-    links:
-      - "mysql:mysql"
+#    links:
+#      - "mysql:mysql"
     ports:
       - "7080:80"
       - "7443:443"
@@ -30,7 +30,7 @@ services:
     hostname: phpmyadmin
     domainname: phpmyadmin.test.flub78.fr
     depends_on:
-      - mysql
+      - gvv
     image: phpmyadmin/phpmyadmin
     links:
       - "gvv:db"

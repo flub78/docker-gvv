@@ -3,7 +3,10 @@
 FROM php:5.6-apache
 MAINTAINER Frédéric Peignot frederic.peignot@free.fr
 
+# Define environment variables in the container
 ENV MAINTAINER "Frédéric Peignot"
+ENV ROOT_PASSWORD $MYSQL_ROOT_PASSWORD
+ENV REVISION ${REVISION}
 
 # install packages
 # ----------------
@@ -13,23 +16,23 @@ RUN apt-get install -y subversion \
   libfreetype6-dev libjpeg62-turbo-dev libmcrypt-dev libpng12-dev \
   phpunit
   
-# For debuging, ifconfig, etc.
+# Packages for debuging, ifconfig, etc.
 RUN apt-get install -y net-tools \
   vim \
   wget
 
-# Install mysql without password
+# Install mysql with no password
 # ------------------------------  
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y mysql-server \
   mysql-client
 
-# Crete the database
-# ------------------
+# Create the database
+# -------------------
 # allow database connections from other machines
 RUN sed -i '/bind-address/s/^/# /' /etc/mysql/my.cnf
 ADD mysql/create_db.sql /tmp/
 ADD mysql/init_db.sh /tmp/
-RUN /tmp/init_db.sh
+RUN set MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD && /tmp/init_db.sh
 
 # Install PDO MySQL driver
 # See https://github.com/docker-library/php/issues/62
@@ -53,7 +56,7 @@ RUN a2ensite gvv
 # Fetch GVV sources
 # -----------------
 RUN	cd /var/www/html && \
-  svn export http://subversion.developpez.com/projets/gvv/trunk/gvv
+  svn export $REVISION http://subversion.developpez.com/projets/gvv/trunk/gvv
 
 # Configure GVV
 # -------------
@@ -78,6 +81,6 @@ RUN useradd -ms /bin/bash frederic
 	
 ENTRYPOINT service mysql start && \
 	apache2-foreground
-#	/usr/sbin/apache2ctl -D FOREGROUNDS
+	
 
 

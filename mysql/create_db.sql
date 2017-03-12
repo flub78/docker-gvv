@@ -1,7 +1,7 @@
 # SQL script to setup the GVV database
 
 # Set a password for root
-set password for 'root'@'localhost' = PASSWORD('mysql_password');
+# set password for 'root'@'localhost' = PASSWORD('mysql_password');
 
 # create GVV database
 create database gvv2;

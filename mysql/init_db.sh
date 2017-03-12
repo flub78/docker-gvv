@@ -27,7 +27,8 @@ done
 mysql < /tmp/create_db.sql
 
 # Tell the MySQL daemon to shutdown.
-mysqladmin shutdown
+echo "MYSQL_ROOT_PASSWORD = $MYSQL_ROOT_PASSWORD"
+mysqladmin shutdown -p${MYSQL_ROOT_PASSWORD}
 
 # Wait for the MySQL daemon to exit.
 wait $mysql_pid
