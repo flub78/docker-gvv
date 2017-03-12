@@ -1,1 +1,1 @@
-docker exec -ti gvv /bin/bash
+docker exec -ti gvv_gvv_1 /bin/bash

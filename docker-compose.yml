@@ -1,12 +1,13 @@
 version: '2'
 services:
-  mysql:
-    image: mysql:5.7
-    volumes:
-      - "/data/docker/mysql/gvv:/var/lib/mysql"
-    restart: always
-    environment:
-      MYSQL_ROOT_PASSWORD: db_password
+
+#  mysql:
+#    image: mysql:5.7
+#    volumes:
+#      - "/data/docker/mysql/gvv:/var/lib/mysql"
+#    restart: always
+#    environment:
+#      MYSQL_ROOT_PASSWORD: db_password
       
   gvv:
     build: .

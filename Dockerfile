@@ -9,26 +9,26 @@ ENV MAINTAINER "Frédéric Peignot"
 # ----------------
 RUN apt-get update
 RUN apt-get install -y subversion \
-  vim \
-  wget \
   php5-curl php5-dev php5-gd \
   libfreetype6-dev libjpeg62-turbo-dev libmcrypt-dev libpng12-dev \
   phpunit
+  
+# For debuging, ifconfig, etc.
+RUN apt-get install -y net-tools \
+  vim \
+  wget
 
 # Install mysql without password
 # ------------------------------  
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y mysql-server \
   mysql-client
 
-# Fetch GVV sources
-# -----------------
-RUN	cd /var/www/html && \
-  svn export http://subversion.developpez.com/projets/gvv/trunk/gvv
-
 # Crete the database
 # ------------------
-ADD create_db.sql /tmp/
-ADD init_db.sh /tmp/
+# allow database connections from other machines
+RUN sed -i '/bind-address/s/^/# /' /etc/mysql/my.cnf
+ADD mysql/create_db.sql /tmp/
+ADD mysql/init_db.sh /tmp/
 RUN /tmp/init_db.sh
 
 # Install PDO MySQL driver
@@ -49,6 +49,11 @@ ADD apache2/php.ini-development /usr/local/etc/php/php.ini
 ADD apache2/sites-available/gvv.conf /etc/apache2/sites-available
 
 RUN a2ensite gvv
+
+# Fetch GVV sources
+# -----------------
+RUN	cd /var/www/html && \
+  svn export http://subversion.developpez.com/projets/gvv/trunk/gvv
 
 # Configure GVV
 # -------------
