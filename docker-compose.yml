@@ -6,20 +6,8 @@ services:
       - "/data/docker/mysql/gvv:/var/lib/mysql"
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: toto
-
-  myadmin:
-    hostname: phpmyadmin
-    domainname: phpmyadmin.test.flub78.fr
-    depends_on:
-      - mysql
-    image: phpmyadmin/phpmyadmin
-    links:
-      - "mysql:db"
-    ports:
-      - "7090:80"
-    restart: always
-
+      MYSQL_ROOT_PASSWORD: db_password
+      
   gvv:
     build: .
     hostname: gvv
@@ -36,4 +24,17 @@ services:
     extra_hosts:
       - "gvv.fr:127.0.0.1"
       - "citemplate.fr:127.0.0.1"
+
+  myadmin:
+    hostname: phpmyadmin
+    domainname: phpmyadmin.test.flub78.fr
+    depends_on:
+      - mysql
+    image: phpmyadmin/phpmyadmin
+    links:
+      - "gvv:db"
+    ports:
+      - "7090:80"
+    restart: always
+
       

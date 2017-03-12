@@ -6,6 +6,7 @@ MAINTAINER Frédéric Peignot frederic.peignot@free.fr
 ENV MAINTAINER "Frédéric Peignot"
 
 # install packages
+# ----------------
 RUN apt-get update
 RUN apt-get install -y subversion \
   vim \
@@ -14,14 +15,18 @@ RUN apt-get install -y subversion \
   libfreetype6-dev libjpeg62-turbo-dev libmcrypt-dev libpng12-dev \
   phpunit
 
-# Install mysql without password  
+# Install mysql without password
+# ------------------------------  
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y mysql-server \
   mysql-client
 
+# Fetch GVV sources
+# -----------------
 RUN	cd /var/www/html && \
   svn export http://subversion.developpez.com/projets/gvv/trunk/gvv
 
 # Crete the database
+# ------------------
 ADD create_db.sql /tmp/
 ADD init_db.sh /tmp/
 RUN /tmp/init_db.sh
@@ -35,22 +40,36 @@ RUN docker-php-ext-install -j$(nproc) iconv mcrypt \
   && docker-php-ext-install -j$(nproc) gd
 
 # Configure apache
-ADD servername.conf /etc/apache2/conf-available
+# ----------------
+ADD apache2/servername.conf /etc/apache2/conf-available
 RUN a2enconf servername
 RUN a2enmod rewrite
-ADD php.ini-development /usr/local/etc/php/php.ini 
+ADD apache2/php.ini-development /usr/local/etc/php/php.ini 
 
+ADD apache2/sites-available/gvv.conf /etc/apache2/sites-available
+
+RUN a2ensite gvv
+
+# Configure GVV
+# -------------
+RUN chmod a+w /var/www/html/gvv/application/config/club.php \
+   /var/www/html/gvv/application/config/facturation.php \
+   /var/www/html/gvv/assets/images \
+   /var/www/html/gvv/uploads
+   
+ADD gvv/config/config.php /var/www/html/gvv/application/config
+ADD gvv/config/database.php /var/www/html/gvv/application/config
+
+ADD html/index.html /var/www/html
+ADD html/index.php /var/www/html
+   
+
+# Miscelaneous
+# ------------
 EXPOSE 80
 EXPOSE 22
 
 RUN useradd -ms /bin/bash frederic
-
-ADD sites-available/gvv.conf /etc/apache2/sites-available
-
-ADD config.php /var/www/html/gvv/application/config/config.php
-ADD html/index.html /var/www/html
-ADD html/index.php /var/www/html
-RUN a2ensite gvv
 	
 ENTRYPOINT service mysql start && \
 	apache2-foreground

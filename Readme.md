@@ -12,7 +12,7 @@ For development
 
 ## Usage
 
-docker-compose up -d
+docker-compose -d -p gvv up
 
 docker exec -ti dockergvv_gvv_1 /bin/bash
  
@@ -26,8 +26,23 @@ http://gvv.fr/install
 http://gvv.fr		
 (user = testadmin, password = password)
 
+http://172.19.0.3/gvv/install
+or 
+http://gvv.fr/install/
+
 ## Database
-mysql> set password for 'root'@'localhost' = PASSWORD('titi');
+
+Currently, there is no password on the local database
+mysql -u root -h localhost
+
+gvv_user has been created
+mysql -u gvv_user -h localhost -plfoyfgbj
+
+mysql> set password for 'root'@'localhost' = PASSWORD('toto');
+
+mysql -h 172.24.0.2 -u root -ptoto
+
+
 
 
 
