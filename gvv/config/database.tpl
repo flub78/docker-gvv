@@ -42,8 +42,8 @@ $active_group = 'default';
 $active_record = TRUE;
 
 $db['default']['hostname'] = '127.0.0.1';
-$db['default']['username'] = 'gvv_user';
-$db['default']['password'] = 'user_password';
+$db['default']['username'] = '$MYSQL_USER_NAME';
+$db['default']['password'] = '$MYSQL_USER_PASSWORD';
 $db['default']['database'] = 'gvv2';
 $db['default']['dbdriver'] = 'mysql';
 $db['default']['dbprefix'] = '';

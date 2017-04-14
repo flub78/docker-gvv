@@ -5,8 +5,9 @@ MAINTAINER Frédéric Peignot frederic.peignot@free.fr
 
 # Define environment variables in the container
 ENV MAINTAINER "Frédéric Peignot"
-ENV ROOT_PASSWORD $MYSQL_ROOT_PASSWORD
-ENV REVISION ${REVISION}
+ARG MYSQL_ROOT_PASSWORD
+ARG REVISION
+ARG SVN_VERSION
 
 # install packages
 # ----------------
@@ -32,7 +33,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get install -y mysql-server \
 RUN sed -i '/bind-address/s/^/# /' /etc/mysql/my.cnf
 ADD mysql/create_db.sql /tmp/
 ADD mysql/init_db.sh /tmp/
-RUN set MYSQL_ROOT_PASSWORD=$MYSQL_ROOT_PASSWORD && /tmp/init_db.sh
+RUN /tmp/init_db.sh
 
 # Install PDO MySQL driver
 # See https://github.com/docker-library/php/issues/62

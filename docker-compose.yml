@@ -1,6 +1,8 @@
-version: '2'
+version: '3'
 services:
 
+# The mysql containers is commented out to keep everything required in production in a single contaienrs.
+# It may be reconsiderated later ...
 #  mysql:
 #    image: mysql:5.7
 #    volumes:
@@ -14,17 +16,20 @@ services:
     hostname: gvv
     domainname: test.flub78.fr
 
-    image: flub78/gvv
+    image: "flub78/gvv:$CONTAINER_VERSION"
 #    links:
 #      - "mysql:mysql"
-    ports:
-      - "7080:80"
-      - "7443:443"
-      - "7306:3306"
-      - "7432:5432"
+# Ports cannot be mapped if we want to deploy several services
+#    ports:
+#      - "7080:80"
+#      - "7443:443"
+#      - "7306:3306"
+#      - "7432:5432"
     extra_hosts:
       - "gvv.fr:127.0.0.1"
       - "citemplate.fr:127.0.0.1"
+    environment:
+      - DOMAIN
 
   myadmin:
     hostname: phpmyadmin
@@ -34,8 +39,8 @@ services:
     image: phpmyadmin/phpmyadmin
     links:
       - "gvv:db"
-    ports:
-      - "7090:80"
+#    ports:
+#      - "7090:80"
     restart: always
 
       
