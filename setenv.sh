@@ -3,8 +3,8 @@
 # Environment must be set during build and while starting docker-compose
 
 # Base for the container names
-export COMPOSE_PROJECT_NAME='gvv_master'
-# export COMPOSE_PROJECT_NAME='gvv_slave'
+export COMPOSE_PROJECT_NAME='gvv1'
+# export COMPOSE_PROJECT_NAME='gvv2'
 
 # Database configuration
 export MYSQL_ROOT_PASSWORD='mysql_password'

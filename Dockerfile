@@ -5,9 +5,9 @@ MAINTAINER Frédéric Peignot frederic.peignot@free.fr
 
 # Define environment variables in the container
 ENV MAINTAINER "Frédéric Peignot"
-ARG MYSQL_ROOT_PASSWORD
-ARG REVISION
-ARG SVN_VERSION
+ARG MYSQL_ROOT_PASSWORD=mysql_password
+ARG REVISION="-r 2285"
+ARG SVN_VERSION='trunk/gvv'
 
 # install packages
 # ----------------
