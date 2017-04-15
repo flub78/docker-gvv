@@ -10,18 +10,19 @@ For development
 * a phpmyadmin container
 * a jenkins container
 
+All examples are given with the default passwords, of course you are really encouraged to rebuild the containers with your own passwords. You just need to reset the values defined in the setenv.sh file in your environment before to execute bin/build.sh
+
 ## Usage
 
-docker-compose -d -p gvv up
-
-docker exec -ti dockergvv_gvv_1 /bin/bash
+### To start the containers
+    docker-compose up -d
  
-1. to build locally
-bin/build.sh
+### to build locally
+    bin/build.sh
 
 1. Make sure that gvv.fr resolves to the container
 
-1. the following URL are available
+1. Once the containers started the following URL are available
 
 http://gvv.fr/install
 
@@ -32,20 +33,26 @@ http://gvv.fr
 ## Database
 
 ### Local access
-Currently, there is no password on the local database
-mysql -u root -h localhost
+From the container
 
-	show databases;
-	select host, user, password from mysql.user;
+    mysql -u root -h localhost -pmysql_password
+
+    show databases;
+    select host, user, password from mysql.user;
 
 gvv_user has been created
-mysql -u gvv_user -h localhost -plfoyfgbj
+
+     mysql -u gvv_user -h localhost -puser_password
 
 
 ### Remote access
-phpmyadmin is available at http://172.19.0.4/
 
-mysql -u gvv_user -h 172.19.0.3 -plfoyfgbj
+The database of the GVV container can be access remotely
+
+    mysql -u gvv_user -h gvv.fr -puser_password
+
+phpmyadmin is available in the gvv1_myadmin_1 container using the same user and password
+
 
 ## Utilities
 
@@ -55,7 +62,6 @@ mysql -u gvv_user -h 172.19.0.3 -plfoyfgbj
 
 ## To do
 
-* connect phpmyadmin to the database
 * enable phpunit tests
 * Support creation of an environment for a specific version
 * Support multiple deployment (make the domain configurable)

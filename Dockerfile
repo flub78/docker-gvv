@@ -13,6 +13,7 @@ ARG SVN_VERSION='trunk/gvv'
 # ----------------
 RUN apt-get update
 RUN apt-get install -y subversion \
+  less \
   php5-curl php5-dev php5-gd \
   libfreetype6-dev libjpeg62-turbo-dev libmcrypt-dev libpng12-dev \
   phpunit
