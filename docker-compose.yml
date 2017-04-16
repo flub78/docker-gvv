@@ -10,9 +10,12 @@ services:
 #    restart: always
 #    environment:
 #      MYSQL_ROOT_PASSWORD: db_password
-      
+
+# When the image is not found locally, it can either be rebuilt locally or fetched from dockerhub
+# use the first option for development, second for deployment      
   gvv:
-    build: .
+#    build: .
+    image: flub78/gvv
     hostname: gvv
     domainname: test.flub78.fr
 
