@@ -16,5 +16,6 @@ export DOMAIN='flub78.fr'
 
 # Build identification
 export SVN_VERSION='trunk/gvv'
-export CONTAINER_VERSION='2285'
+# export CONTAINER_VERSION='2285'
+export CONTAINER_VERSION='latest'
 export REVISION="-r $CONTAINER_VERSION"
