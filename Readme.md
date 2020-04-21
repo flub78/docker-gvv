@@ -1,33 +1,51 @@
 # flub78/docker-gvv
 
-Defines a docker container with a live GVV application.
+Defines a docker environment with a live GVV application.
 
-For production
-* A PHP enabled WEB server plus the GVV sources container
-* a MySql container (optional, Mysql is also deployed in the GVV container to make it self-sufficient in production)
+It is made of
+* a MySql container with a mount volume for persistency
+* an Apache container serving a mount volume containing GVV 
 
 For development
-* a phpmyadmin container
-* a jenkins container
+* a phpmyadmin container to manage the database
 
 All examples are given with the default passwords, of course you are really encouraged to rebuild the containers with your own passwords. You just need to reset the values defined in the setenv.sh file in your environment before to execute bin/build.sh
 
+Check and adapt the setenv.sh script to fit to your local environment.
+ 
 ## Usage
 
 ### To start the containers
+
+	source setenv.sh
     docker-compose up -d
  
-### to build locally
-    bin/build.sh
+### Build
+    
+	All containers are publicly available on dockerhub. The ones which have been modified
+	are automatically built from github each time that the git repository is modified.
+	
+### Networking
 
-1. Make sure that gvv.fr resolves to the container
-
-1. Once the containers started the following URL are available
-
-http://gvv.fr/install
-
-http://gvv.fr		
-(user = testadmin, password = password)
+	The containers publish one or several ports to the docker engine host. Once the containers started, the docker engine host can receive queries on several ports which will be redirected
+	to the containers. All ports are define by the environment variables in the setenv.sh file.
+	
+	If the docker engine server is referenced by a DNS, the domain can be used to make the request.
+	
+	For example if flub.fr is the domain
+	
+	To reset GVV
+	http://flub78.fr:90/install/reset.php
+	
+	To install GVV
+	http://flub78.fr:90/install/
+	
+	To use GVV
+	http://flub78.fr:90/
+	(user = testadmin, password = password)
+	
+	To access phpmyadmin
+	http://flub78.fr:7090/
 
 
 ## Database
@@ -35,7 +53,7 @@ http://gvv.fr
 ### Local access
 From the container
 
-    mysql -u root -h localhost -pmysql_password
+    mysql -u root -h localhost -pdb_password
 
     show databases;
     select host, user, password from mysql.user;
@@ -56,21 +74,16 @@ phpmyadmin is available in the gvv1_myadmin_1 container using the same user and 
 
 ## Utilities
 
-* bin/build.sh a shell script to rebuild the container
-* bin/ip.sh a script to find the IP address oa a container
-* bin/login.sh a script to start a bash in the gvv container
+* bin/ip.sh a script to find the IP address of a container
 
 ## To do
 
+* create an ansible script to deploy
+* Use apache virtual hosts to access the different services through subdomains
 * enable phpunit tests
 * Support creation of an environment for a specific version
 * Support multiple deployment (make the domain configurable)
 
-## Deployment
-
-Deployment is not the same when a unique instance is deployed on a docker engine. In this case one want likely to mapp some ports on the docker engine machine. During testing, one may prefer to be able to launche instances dynamically.
-
-Note also that without additional configuration only the docker engine machine can directly address the docker containers by their IP address.
 
 ## Troubleshooting
 

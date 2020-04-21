@@ -1,49 +1,38 @@
 version: '3'
 services:
 
-# The mysql containers is commented out to keep everything required in production in a single contaienrs.
-# It may be reconsiderated later ...
-#  mysql:
-#    image: mysql:5.7
-#    volumes:
-#      - "/data/docker/mysql/gvv:/var/lib/mysql"
-#    restart: always
-#    environment:
-#      MYSQL_ROOT_PASSWORD: db_password
-
-# When the image is not found locally, it can either be rebuilt locally or fetched from dockerhub
-# use the first option for development, second for deployment      
-  gvv:
-#    build: .
-    image: flub78/gvv
-    hostname: gvv
-    domainname: test.flub78.fr
-
-    image: "flub78/gvv:$CONTAINER_VERSION"
-#    links:
-#      - "mysql:mysql"
-# Ports cannot be mapped if we want to deploy several services
-#    ports:
-#      - "7080:80"
-#      - "7443:443"
-#      - "7306:3306"
-#      - "7432:5432"
-    extra_hosts:
-      - "gvv.fr:127.0.0.1"
-      - "citemplate.fr:127.0.0.1"
+# The mysql containers 
+  mysql:
+    image: mysql:5.7
+    volumes:
+      - "$GVV_MYSQL_DIR:/var/lib/mysql"
+    restart: always
     environment:
-      - DOMAIN
+      MYSQL_ROOT_PASSWORD: db_password
 
+  # A container to manage the mysql database
   myadmin:
     hostname: phpmyadmin
-    domainname: phpmyadmin.test.flub78.fr
-    depends_on:
-      - gvv
+    domainname: phpmyadmin.flub78.fr
+    # depends_on:
+      # - gvv
     image: phpmyadmin/phpmyadmin
     links:
-      - "gvv:db"
-#    ports:
-#      - "7090:80"
+      - "mysql:db"
+    ports:
+      - "$PORT_PHPMYADMIN:80"
     restart: always
-
-      
+    
+  # An apache php container
+  apache:
+    hostname: apache
+    image: flub78/apache-php
+    ports:
+      - "$PORT_HTTP:80"
+      - "$PORT_HTTPS:443"      
+    volumes:
+      - "$GVV_HOME:/var/www/html/"
+    links:
+      - "mysql:db"
+    restart: always
+    

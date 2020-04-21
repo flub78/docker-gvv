@@ -2,9 +2,15 @@
 
 # Environment must be set during build and while starting docker-compose
 
+export GVV_MYSQL_DIR='/home/frederic/docker/storage/mysql/gvv'
+export GVV_HOME='/home/frederic/docker/storage/gvv'
+
+export PORT_PHPMYADMIN='7090'
+export PORT_HTTP='90'
+export PORT_HTTPS='543'
+
 # Base for the container names
-export COMPOSE_PROJECT_NAME='gvv1'
-# export COMPOSE_PROJECT_NAME='gvv2'
+export COMPOSE_PROJECT_NAME='gvv'
 
 # Database configuration
 export MYSQL_ROOT_PASSWORD='mysql_password'
